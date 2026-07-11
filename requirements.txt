@@ -1,0 +1,15 @@
+fastapi>=0.115,<1.0
+uvicorn[standard]>=0.30
+sqlalchemy>=2.0,<3.0
+alembic>=1.13
+asyncpg>=0.29          # production driver: postgresql+asyncpg://...
+aiosqlite>=0.20         # local/dev/test driver: sqlite+aiosqlite:///./dev.db
+pydantic>=2.7
+pydantic-settings>=2.3
+passlib>=1.7
+bcrypt<4.1              # passlib 1.7.4 (unmaintained) breaks on bcrypt>=4.1's changed API
+python-jose[cryptography]>=3.3
+python-multipart>=0.0.9
+slowapi>=0.1.9
+email-validator>=2.1
+structlog>=24.1         # structured logging (app/core/logging.py)

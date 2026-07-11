@@ -1,7 +1,42 @@
-venv
+# Python cache files
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.pyc
+*.egg-info/
+*.pyo
+
+# python virtual environments
+.venv/
+venv/
+.virtualenv/
+virtualenv/
+
+# Environment variables
 .env
-__pycache__
+.env.*
+!.env.example
+
+#database files
+instance/
+*.sqlite
+*.db
+
+.python-version
+.coverage
+.coverage.*
+htmlcov/
+
 branch_structure.json
-temp_auto_push.bat
-temp_interactive_push.bat
-.gitignore
+*.bat
+
+# Logs
+logs/
+*.log
+
+# Internal artifacts
+docs/superpowers/
+CLAUDE.md
+.claude/
+build/
