@@ -3,7 +3,7 @@ import enum
 from sqlalchemy import Boolean, Enum, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.infrastructure.database.base import TimestampedBase
+from app.infrastructure.database.mixins import TimestampedBase
 
 
 class Role(str, enum.Enum):

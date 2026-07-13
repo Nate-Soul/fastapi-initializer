@@ -41,11 +41,11 @@ app/
 ├── api/
 │   ├── health.py           # /health + /health/ready
 │   └── v1/router.py        # central v1 aggregator — includes each module's router
-├── core/                   # config, security (hashing/JWT), exceptions, logging
+├── core/                   # config, security (hashing/JWT), exceptions, logging, events (lifespan)
 ├── common/                 # shared schemas (error envelope, Page) + deps (DbSession)
 ├── infrastructure/
-│   ├── database/           # Base + GUID + TimestampedBase, engine/session
-│   └── middleware/         # security_headers, request_id, rate_limit
+│   ├── database/           # base (Base + GUID), mixins (Timestamp/SoftDelete/UUID PK), engine/session
+│   └── middleware/         # security_headers, request_id, rate_limit, cors, error_handler
 └── modules/
     ├── users/              # models, schemas, service, routes
     └── auth/               # models, schemas, service, routes, dependencies
@@ -98,7 +98,8 @@ a Docker build against a real Postgres service on every push/PR.
 1. Create `app/modules/<name>/` with `models.py`, `schemas.py`, `service.py`, `routes.py`
    (and `dependencies.py` if it has its own auth needs).
 2. Models extend `TimestampedBase` (UUID PK + timestamps + soft delete for free) from
-   `app.infrastructure.database.base`.
+   `app.infrastructure.database.mixins` — or compose the individual `UUIDPrimaryKeyMixin`,
+   `TimestampMixin`, and `SoftDeleteMixin` when a model needs a different combination.
 3. Register the module's `router` in `app/api/v1/router.py`.
 4. Import the module's models in `alembic/env.py` so autogenerate sees them.
 5. `alembic revision --autogenerate -m "add <name>"` — **check the generated file**:
