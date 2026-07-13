@@ -4,7 +4,8 @@ from datetime import datetime
 from sqlalchemy import Boolean, DateTime, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.infrastructure.database.base import GUID, TimestampedBase
+from app.infrastructure.database.base import GUID
+from app.infrastructure.database.mixins import TimestampedBase
 
 
 class RefreshToken(TimestampedBase):

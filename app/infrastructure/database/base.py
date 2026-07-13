@@ -1,9 +1,12 @@
+"""ORM foundations: the declarative ``Base``, the cross-dialect ``GUID`` type, and
+UTC datetime helpers. Reusable column groups live in ``mixins.py``, which builds on
+these primitives."""
+
 import uuid
 from datetime import datetime, timezone
 
-from sqlalchemy import DateTime
 from sqlalchemy.dialects.postgresql import UUID as PG_UUID
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.types import CHAR, TypeDecorator
 
 
@@ -45,20 +48,3 @@ def as_aware_utc(dt: datetime) -> datetime:
     Normalize here so comparisons against datetime.now(timezone.utc) work identically
     on both backends instead of raising TypeError on SQLite only."""
     return dt if dt.tzinfo is not None else dt.replace(tzinfo=timezone.utc)
-
-
-class TimestampedBase(Base):
-    """Abstract base: UUID PK (non-enumerable), created_at/updated_at, soft delete."""
-
-    __abstract__ = True
-
-    id: Mapped[uuid.UUID] = mapped_column(GUID(), primary_key=True, default=uuid.uuid4)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, nullable=False)
-    updated_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), default=utcnow, onupdate=utcnow, nullable=False
-    )
-    deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True, default=None)
-
-    @property
-    def is_deleted(self) -> bool:
-        return self.deleted_at is not None
